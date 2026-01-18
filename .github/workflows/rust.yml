@@ -1,0 +1,56 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Build release
+        run: cargo build --release --locked
+
+      - name: Prepare binary and calculate hash
+        id: prepare
+        run: |
+          cd target/release
+          BINARY_NAME="awg-toggle-linux-x86_64"
+          mv awg-toggle $BINARY_NAME
+          
+          CHECKSUM=$(sha256sum $BINARY_NAME | cut -d ' ' -f 1)
+          echo "sha_hash=$CHECKSUM" >> $GITHUB_OUTPUT
+          
+          echo "$CHECKSUM  $BINARY_NAME" > sha256.txt
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+
+          body: |
+            ## Installation
+            Download the binary below and move it to `/usr/local/bin/`.
+            
+            ## Checksums (SHA256)
+            ```
+            ${{ steps.prepare.outputs.sha_hash }}  wg-toggle-linux-x86_64
+            ```
+            
+            Refer to README.md for full configuration instructions.
+          files: |
+            target/release/wg-toggle-linux-x86_64
+            target/release/sha256.txt
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
