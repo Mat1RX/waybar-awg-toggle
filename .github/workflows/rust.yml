@@ -43,12 +43,12 @@ jobs:
             
             ## Checksums (SHA256)
             ```
-            ${{ steps.prepare.outputs.sha_hash }}  wg-toggle-linux-x86_64
+            ${{ steps.prepare.outputs.sha_hash }}  awg-toggle-linux-x86_64
             ```
             
             Refer to README.md for full configuration instructions.
           files: |
-            target/release/wg-toggle-linux-x86_64
+            target/release/awg-toggle-linux-x86_64
             target/release/sha256.txt
           draft: false
           prerelease: false
