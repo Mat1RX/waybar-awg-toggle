@@ -67,7 +67,7 @@ To install the binary and Polkit rules manually into your system:
 # Install binary
 sudo install -Dm755 target/release/awg-toggle /usr/bin/awg-toggle
 
-# Install Polkit rules (optional, recommended)
+# Install Polkit rules (optional)
 sudo install -Dm644 10-awg-toggle.rules /etc/polkit-1/rules.d/10-awg-toggle.rules
 ```
 ---
@@ -80,7 +80,7 @@ The application uses the WG_CONFIG_DIR environment variable to locate your Amnez
 
 Managing network interfaces requires root privileges. To allow members of the **wheel** group to run this plugin without a password prompt, choose **one** of the following methods:
 
-### Option A: Via Sudoers (Recommended)
+### Option A: Via Sudoers
 
 Run `sudo visudo` and append the following line to the end of the file:
 
